@@ -49,9 +49,15 @@ typedef NS_ENUM(NSInteger, XKFastRawImageStoreBitmapStyle) {
 - (BOOL)writeImage:(UIImage *)image toPath:(NSString *)path error:(NSError * __autoreleasing *)error;
 
 /** Write an image to the given path, with the given size and scale.
-    The pixel size of the image written to disk is given by size * scale.
+    The pixel size of the image written to disk will be size * scale.
+    The image will be scaled, if necessary, to the given size.
  */
 - (BOOL)writeImage:(UIImage *)image size:(const CGSize)size scale:(const CGFloat)scale toPath:(NSString *)path error:(NSError * __autoreleasing *)error;
+
+/** Write an image to the given path, with the given width and height in pixels.
+    The image will be scaled, if necessary, to the given pixel size.
+ */
+- (BOOL)writeImage:(UIImage * const)image width:(const size_t)width height:(const size_t)height toPath:(NSString * const)path error:(NSError * __autoreleasing *)error;
 
 /** Returns the default base path where you might store images written using this class.
     This returns the path of the `Library/Caches` directory for the current application.

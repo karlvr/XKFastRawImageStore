@@ -106,13 +106,19 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
 
 - (BOOL)writeImage:(UIImage *)image size:(const CGSize)size scale:(const CGFloat)scale toPath:(NSString *)path error:(NSError **)error
 {
+    const size_t width = size.width * scale;
+    const size_t height = size.height * scale;
+ 
+    return [self writeImage:image width:width height:height toPath:path error:error];
+}
+
+- (BOOL)writeImage:(UIImage * const)image width:(const size_t)width height:(const size_t)height toPath:(NSString * const)path error:(NSError * __autoreleasing *)error
+{
     const CGImageRef cgImage = [image CGImage];
     if (!cgImage) {
         return NO;
     }
     
-    const size_t width = size.width * scale;
-    const size_t height = size.height * scale;
     const size_t bytesPerRow = XKFIDCAlign(width * _bytesPerPixel, _alignment);
     
     const size_t length = bytesPerRow * height + sizeof(XKFastRawImageStoreTrailer);
