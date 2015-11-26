@@ -8,40 +8,60 @@
 
 // https://github.com/Specta/Specta
 
+@import XKFastRawImageStore;
+@import UIKit;
+
+
 SpecBegin(InitialSpecs)
 
-describe(@"these will fail", ^{
-
-    it(@"can do maths", ^{
-        expect(1).to.equal(2);
-    });
-
-    it(@"can read", ^{
-        expect(@"number").to.equal(@"string");
-    });
+describe(@"write images", ^{
     
-    it(@"will wait for 10 seconds and fail", ^{
-        waitUntil(^(DoneCallback done) {
+    it(@"can write an image", ^{
+        UIImage *image = [UIImage imageNamed:@"67"];
+        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"test.raw"];
         
-        });
-    });
-});
-
-describe(@"these will pass", ^{
-    
-    it(@"can do maths", ^{
-        expect(1).beLessThan(23);
+        XKFastRawImageStore *imageStore = [XKFastRawImageStore new];
+        BOOL result = [imageStore writeImage:image toPath:path error:nil];
+        
+        expect(result).to.equal(YES);
     });
     
-    it(@"can read", ^{
-        expect(@"team").toNot.contain(@"I");
+    it(@"can read an image", ^{
+        UIImage *image = [UIImage imageNamed:@"67"];
+        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"test.raw"];
+        
+        XKFastRawImageStore *imageStore = [XKFastRawImageStore new];
+        BOOL result = [imageStore writeImage:image toPath:path error:nil];
+        
+        expect(result).to.equal(YES);
+        
+        UIImage *read = [imageStore imageForPath:path scale:1];
+        expect(read).toNot.equal(nil);
+        
+        expect(read.scale).to.equal(1.0);
+        expect(read.size.width).to.equal(image.size.width * image.scale);
+        expect(read.size.height).to.equal(image.size.height * image.scale);
+        expect(read.size.width).toNot.equal(0);
+        expect(read.size.height).toNot.equal(0);
     });
     
-    it(@"will wait and succeed", ^{
-        waitUntil(^(DoneCallback done) {
-            done();
-        });
+    it(@"can resize an image", ^{
+        UIImage *image = [UIImage imageNamed:@"67"];
+        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"test.raw"];
+        
+        XKFastRawImageStore *imageStore = [XKFastRawImageStore new];
+        BOOL result = [imageStore writeImage:image width:32 height:32 toPath:path error:nil];
+        
+        expect(result).to.equal(YES);
+        
+        UIImage *read = [imageStore imageForPath:path scale:1];
+        expect(read).toNot.equal(nil);
+        
+        expect(read.scale).to.equal(1.0);
+        expect(read.size.width).to.equal(32);
+        expect(read.size.height).to.equal(32);
     });
+    
 });
 
 SpecEnd
