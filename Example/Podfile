@@ -1,0 +1,13 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
+
+target 'XKFastRawImageStore_Example', :exclusive => true do
+  pod "XKFastRawImageStore", :path => "../"
+end
+
+target 'XKFastRawImageStore_Tests', :exclusive => true do
+  pod "XKFastRawImageStore", :path => "../"
+
+  pod 'Specta'
+  pod 'Expecta'
+end
