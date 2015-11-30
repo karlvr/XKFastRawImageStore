@@ -122,7 +122,7 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
     const size_t bytesPerRow = XKFIDCAlign(width * _bytesPerPixel, _alignment);
     
     const size_t length = bytesPerRow * height + sizeof(XKFastRawImageStoreTrailer);
-    void *bytes = malloc(length);
+    void *bytes = calloc(length, 1);
     if (bytes == NULL) {
         return NO;
     }
