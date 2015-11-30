@@ -30,6 +30,13 @@ typedef NS_ENUM(NSInteger, XKFastRawImageStoreBitmapStyle) {
 /** The row alignment. The default is the best for Core Animation. Probably don't change. */
 @property (readwrite, nonatomic) size_t alignment;
 
+/** The background color to use when the output format doesn't support alpha. If you write an
+    image containing alpha to a bitmap style that doesn't include alpha, it will be rendered
+    on the background color. Alpha components in the background color may cause unexpected results.
+    Defaults to white.
+ */
+@property (strong, nonatomic) UIColor *backgroundColor;
+
 /** The bitmap info that will be used for the current bitmapStyle */
 @property (readonly, nonatomic) CGBitmapInfo bitmapInfo;
 /** The bits per component that will be used for the current bitmapStyle */

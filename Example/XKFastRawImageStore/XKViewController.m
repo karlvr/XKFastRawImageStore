@@ -28,6 +28,9 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         _imageStore = [XKFastRawImageStore new];
+        _imageStore.bitmapStyle = XKFastRawImageStoreBitmapInfo16BitBGR;
+        _imageStore.backgroundColor = [UIColor purpleColor];
+        
         _basePath = [[XKFastRawImageStore defaultBasePath] stringByAppendingPathComponent:@"fastimages"];
         
         /* Ensure the directory exists where we want to store the images */
@@ -53,7 +56,8 @@
     /* Try to load existing cached raw image */
     UIImage * result = [_imageStore imageForPath:path scale:self.traitCollection.displayScale];
     if (result) {
-        return result;
+        /* But don't use it in this case so we can test different configuration */
+//        return result;
     }
     
     /* Generate the raw image */

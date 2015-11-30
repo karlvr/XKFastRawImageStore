@@ -142,6 +142,16 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
     }
     
     CGRect r = (CGRect) { CGPointZero, { width, height }};
+    
+    if (![self supportsTransparency]) {
+        if (_backgroundColor) {
+            CGContextSetFillColorWithColor(ctx, _backgroundColor.CGColor);
+        } else {
+            CGContextSetFillColorWithColor(ctx, [UIColor whiteColor].CGColor);
+        }
+        CGContextFillRect(ctx, r);
+    }
+    
     CGContextDrawImage(ctx, r, cgImage);
     
     CGContextRelease(ctx);
@@ -194,6 +204,14 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
     } else {
         return nil;
     }
+}
+
+#pragma mark - Private
+
+- (BOOL)supportsTransparency
+{
+    const CGImageAlphaInfo alphaInfo = (_bitmapInfo & kCGBitmapAlphaInfoMask);
+    return alphaInfo != kCGImageAlphaNone && alphaInfo != kCGImageAlphaNoneSkipLast && alphaInfo != kCGImageAlphaNoneSkipFirst;
 }
 
 @end
