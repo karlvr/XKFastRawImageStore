@@ -10,6 +10,8 @@
 
 u_int8_t XKFastRawImageStoreCurrentTrailerVersion = 1;
 
+NSString * const XKFastRawImageStoreErrorDomain = @"XKFastRawImageStoreErrorDomain";
+
 typedef struct {
     size_t width;
     size_t height;
@@ -116,6 +118,11 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
 {
     const CGImageRef cgImage = [image CGImage];
     if (!cgImage) {
+        if (error) {
+            *error = [NSError errorWithDomain:XKFastRawImageStoreErrorDomain
+                                         code:XKFastRawImageStoreErrorNoCGImage
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"Image did not have an underlying CGImageRef." }];
+        }
         return NO;
     }
     
@@ -124,6 +131,11 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
     const size_t length = bytesPerRow * height + sizeof(XKFastRawImageStoreTrailer);
     void *bytes = calloc(length, 1);
     if (bytes == NULL) {
+        if (error) {
+            *error = [NSError errorWithDomain:XKFastRawImageStoreErrorDomain
+                                         code:XKFastRawImageStoreErrorAllocateFailed
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"Could not allocate memory for image." }];
+        }
         return NO;
     }
     
@@ -138,6 +150,11 @@ static void _XKFIDCReleaseImageData(void *info, const void *data, size_t size) {
     
     CGContextRef ctx = CGBitmapContextCreate(bytes, width, height, _bitsPerComponent, bytesPerRow, _colorSpace, _bitmapInfo);
     if (!ctx) {
+        if (error) {
+            *error = [NSError errorWithDomain:XKFastRawImageStoreErrorDomain
+                                         code:XKFastRawImageStoreErrorBitmapContextFailed
+                                     userInfo:@{ NSLocalizedDescriptionKey: @"Could not create bitmap context." }];
+        }
         return NO;
     }
     

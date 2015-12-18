@@ -23,6 +23,14 @@ typedef NS_ENUM(NSInteger, XKFastRawImageStoreBitmapStyle) {
     XKFastRawImageStoreBitmapInfo8BitGray,
 };
 
+extern NSString * const XKFastRawImageStoreErrorDomain;
+
+NS_ENUM(NSInteger) {
+    XKFastRawImageStoreErrorNoCGImage,
+    XKFastRawImageStoreErrorAllocateFailed,
+    XKFastRawImageStoreErrorBitmapContextFailed
+};
+
 @interface XKFastRawImageStore : NSObject
 
 /** The bitmap style of the images to write. See the XKFastRawImageStoreBitmapStyle enum for details. */
