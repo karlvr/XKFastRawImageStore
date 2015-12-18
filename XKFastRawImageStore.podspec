@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "XKFastRawImageStore"
-  s.version          = "1.0.0"
+  s.version          = "1.0.1"
   s.summary          = "Store images so they can be loaded quickly by Core Animation."
 
 # This description is used to generate tags and improve search results.
